@@ -1,0 +1,20 @@
+name: Build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Extract zip
+        run: unzip NeltraStack-source.zip && ls
+      - name: Check pom
+        run: cat NeltraStack/pom.xml
+      - run: cd NeltraStack && mvn clean package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NeltraStack
+          path: NeltraStack/target/NeltraStack.jar
